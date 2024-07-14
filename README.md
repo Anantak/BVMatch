@@ -1,3 +1,7 @@
+# Anantak trial of BVMatch
+July 14, 2024
+This idea did not work for us. As we are running on rather sparse scans/grids, local feature matching gives too many poor matches. A holistic BEV image descriptor as in BVPlace might work better. 
+
 # BVMatch: Lidar-Based Place Recognition Using Bird's-Eye View Images
 
 BVMatch is a LiDAR-based place recognition method that is capable of estimating 2D relative poses. It projects LiDAR scans to BV images and extracs BVFT descriptors from the images. Place recognition is achieved using bag-of-words approach, and the relative pose is computed through BVFT descriptor matching. 

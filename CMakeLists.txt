@@ -4,24 +4,25 @@ project(loop_rift)
 add_compile_options(-std=c++11)
 add_compile_options(-std=gnu++11)
 
-set(OpenCV_DIR '/opt/ros/kinetic/share/OpenCV-3.3.1-dev/')
 set(CMAKE_BUILD_TYPE release)
-
 
 find_package(OpenCV REQUIRED)
 find_package(PythonLibs REQUIRED)
-find_package(PCL REQUIRED)
+#find_package(PCL REQUIRED)
 
-SET( EIGEN3_INCLUDE_DIRS "/usr/local/include/eigen3" )
+SET(EIGEN3_INCLUDE_DIRS "/usr/local/include/eigen3" )
 
 include_directories(
   include
 	${EIGEN3_INCLUDE_DIRS}
-	${PCL_INCLUDE_DIRS}
+	#${PCL_INCLUDE_DIRS}
 )
 
-add_executable(match_two_scan src/match_two_scan.cpp) 
-target_link_libraries(match_two_scan ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} python2.7)
+add_executable(match_bev_images src/match_bev_images.cpp) 
+target_link_libraries(match_bev_images ${OpenCV_LIBS})
 
-add_executable(generate_descriptors src/generate_descriptors.cpp)    #change the verticle 
-target_link_libraries(generate_descriptors ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS}  python2.7)
+# add_executable(match_two_scan src/match_two_scan.cpp) 
+# target_link_libraries(match_two_scan ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS} python2.7)
+
+# add_executable(generate_descriptors src/generate_descriptors.cpp)    #change the verticle 
+# target_link_libraries(generate_descriptors ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS}  python2.7)

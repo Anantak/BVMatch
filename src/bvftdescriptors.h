@@ -1,4 +1,3 @@
-
 #ifndef bvftdescriptors_h
 #define bvftdescriptors_h
 #include <opencv2/opencv.hpp>
@@ -11,18 +10,23 @@
 #include <Eigen/Dense>
 #include <opencv2/core/eigen.hpp>
 #include <fstream>
+
 int norient = 12;
 int nscale = 4;
 int pad_size = 138;
+
 using namespace std;
 using namespace cv;
 using namespace Eigen;
 
-class BVFT{
-    public:
+class BVFT
+{
+  public:
+    
     BVFT(){}
+    
     BVFT(vector<KeyPoint>& keypoints, Mat& descriptors)
-    :keypoints(keypoints),descriptors(descriptors){}
+      :keypoints(keypoints),descriptors(descriptors){}
 
     vector<KeyPoint> keypoints; // keypoints coordinates
     Mat descriptors;            // keypoint descriptors
@@ -326,7 +330,7 @@ Mat estimateICP(const Mat& src, const Mat& dst, vector<int>& inliers_ind, int ma
             Mat err_temp=T*src_homo_t-dst_homo_t;
             err_temp=err_temp.mul(err_temp);
             
-            reduce(err_temp, err, 0, CV_REDUCE_SUM); //one row
+            reduce(err_temp, err, 0, REDUCE_SUM); //one row
 
             int consensus_num =  sum((err<err_t*err_t)/255)[0];
             if (consensus_num > max_consensus_number)
@@ -342,7 +346,7 @@ Mat estimateICP(const Mat& src, const Mat& dst, vector<int>& inliers_ind, int ma
     }
 
     Mat err;
-    reduce((consensus_T*src_homo.t()-dst_homo.t()).mul(consensus_T*src_homo.t()-dst_homo.t()), err, 0, CV_REDUCE_SUM);
+    reduce((consensus_T*src_homo.t()-dst_homo.t()).mul(consensus_T*src_homo.t()-dst_homo.t()), err, 0, REDUCE_SUM);
     for(int i=0; i<err.cols; i++)
     {
         if(err.ptr<float>(0)[i]<err_t*err_t)
@@ -575,7 +579,7 @@ BVFT detectBVFT(Mat img1)
 {
     chrono::steady_clock::time_point t_start = chrono::steady_clock::now();
 
-    normalize(img1,img1,0,255,CV_MINMAX);
+    normalize(img1,img1,0,255,NORM_MINMAX);
 
     int rows = img1.rows;
     int cols = img1.cols;
@@ -678,8 +682,9 @@ BVFT detectBVFT(Mat img1)
 
     //detect FAST keypoints on the BV image
     Ptr<FastFeatureDetector> fast = FastFeatureDetector::create();
+    fast->setThreshold(50);
     Mat for_fast=img1.clone();
-    normalize(img1,for_fast, 0, 255, CV_MINMAX);//=img1.clone();
+    normalize(img1,for_fast, 0, 255, NORM_MINMAX);//=img1.clone();
 
     vector<KeyPoint> keypoints_raw;
     vector<KeyPoint> keypoints;
